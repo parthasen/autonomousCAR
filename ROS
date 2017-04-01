@@ -10,3 +10,4 @@ https://github.com/didi-challenge-team-khodro/data_analysis
 http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
 
 catkin_ws_didi
+echo $ROS_PACKAGE_PATH
