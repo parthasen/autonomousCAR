@@ -8,6 +8,11 @@ https://github.com/didi-challenge-team-khodro/data_analysis
 
 https://github.com/jokla/didi_challenge_ros
 http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+http://wiki.ros.org/ROS/Tutorials/NavigatingTheFilesystem
+http://wiki.ros.org/catkin/commands/catkin_make
+http://wiki.ros.org/catkin/workspaces
+http://wiki.ros.org/catkin
+
 
 catkin_ws_didi
 echo $ROS_PACKAGE_PATH
