@@ -21,7 +21,34 @@ http://wiki.ros.org/ROS/Tutorials/NavigatingTheFilesystem
 http://wiki.ros.org/catkin/commands/catkin_make
 http://wiki.ros.org/catkin/workspaces
 http://wiki.ros.org/catkin
+http://wiki.ros.org/ROS/Tutorials
 
-
-catkin_ws_didi
+U14 system
+catkin_ws
 echo $ROS_PACKAGE_PATH
+
+
+
+octo@octo:~/catkin_ws$ catkin_make
+Base path: /home/octo/catkin_ws
+Source space: /home/octo/catkin_ws/src
+Build space: /home/octo/catkin_ws/build
+Devel space: /home/octo/catkin_ws/devel
+Install space: /home/octo/catkin_ws/install
+Creating symlink "/home/octo/catkin_ws/src/CMakeLists.txt" pointing to "/opt/ros/indigo/share/catkin/cmake/toplevel.cmake"
+...
+
+octo@octo:~/catkin_ws$ dir
+build  devel  src
+octo@octo:~/catkin_ws$ cd devel
+octo@octo:~/catkin_ws/devel$ dir
+env.sh	lib  setup.bash  setup.sh  _setup_util.py  setup.zsh
+octo@octo:~/catkin_ws/devel$ cd ~/catkin_ws/
+octo@octo:~/catkin_ws$ cd src
+octo@octo:~/catkin_ws/src$ dir
+CMakeLists.txt
+octo@octo:~/catkin_ws/src$ cd ~/catkin_ws/
+octo@octo:~/catkin_ws$ source devel/setup.bash
+octo@octo:~/catkin_ws$ echo $ROS_PACKAGE_PATH
+/home/octo/catkin_ws/src:/opt/ros/indigo/share:/opt/ros/indigo/stacks
+octo@octo:~/catkin_ws$ gedit ~/.bashrc
