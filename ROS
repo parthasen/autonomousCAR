@@ -52,3 +52,5 @@ octo@octo:~/catkin_ws$ source devel/setup.bash
 octo@octo:~/catkin_ws$ echo $ROS_PACKAGE_PATH
 /home/octo/catkin_ws/src:/opt/ros/indigo/share:/opt/ros/indigo/stacks
 octo@octo:~/catkin_ws$ gedit ~/.bashrc
+
+octo@octo:~/catkin_ws/src/didi_challenge_ros$ roslaunch didi_challenge_ros display_rosbag_rviz.launch rosbag_file:=home/octo/Desktop/Didi-Training-Release-1/approach_1.bag
