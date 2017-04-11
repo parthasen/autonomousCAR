@@ -54,3 +54,8 @@ octo@octo:~/catkin_ws$ echo $ROS_PACKAGE_PATH
 octo@octo:~/catkin_ws$ gedit ~/.bashrc
 
 octo@octo:~/catkin_ws/src/didi_challenge_ros$ roslaunch didi_challenge_ros display_rosbag_rviz.launch rosbag_file:=home/octo/Desktop/Didi-Training-Release-1/approach_1.bag
+
+http://ros-training.com/
+http://cs460.coins-lab.org/index.php?title=Main_Page
+https://polybox.ethz.ch/index.php/s/kPQFsNrpDinWQJL
+http://www.rsl.ethz.ch/education-students/lectures/ros.html
