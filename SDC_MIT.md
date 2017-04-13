@@ -17,3 +17,8 @@ Computer Vision, CNN, NVIDIA model...
     {type:'fc', num_neurons:12, group_size: 4, activation:'maxout'}
     // dropout half the units (probability 0.5) in this layer during training, for regularization
     {type:'fc', num_neurons:10, activation:'relu', drop_prob: 0.5}
+    
+    layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:2});
+    layer_defs.push({type:'fc', num_neurons:20, activation:'relu'});
+    layer_defs.push({type:'fc', num_neurons:40, activation:'relu', drop_prob:0.5});
+    layer_defs.push({type:'softmax', num_classes:4});
