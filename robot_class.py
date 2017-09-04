@@ -10,24 +10,21 @@
 # Don't modify the code below. Please enter
 # your code at the bottom.
 
+# Now we want to give weight to our 
+# particles. This program will print a
+# list of 1000 particle weights.
+#
+# Don't modify the code below. Please enter
+# your code at the bottom.
+
 from math import *
 import random
-
 
 
 landmarks  = [[20.0, 20.0], [80.0, 80.0], [20.0, 80.0], [80.0, 20.0]]
 world_size = 100.0
 
 
-class robot:
-    def __init__(self):
-        self.x = random.random() * world_size
-        self.y = random.random() * world_size
-        self.orientation = random.random() * 2.0 * pi
-        self.forward_noise = 0.0;
-        self.turn_noise    = 0.0;
-        self.sense_noise   = 0.0;
-    
     def set(self, new_x, new_y, new_orientation):
         if new_x < 0 or new_x >= world_size:
             raise ValueError, 'X coordinate out of bound'
@@ -93,12 +90,9 @@ class robot:
             dist = sqrt((self.x - landmarks[i][0]) ** 2 + (self.y - landmarks[i][1]) ** 2)
             prob *= self.Gaussian(dist, self.sense_noise, measurement[i])
         return prob
-    
-    
-    
+     
     def __repr__(self):
         return '[x=%.6s y=%.6s orient=%.6s]' % (str(self.x), str(self.y), str(self.orientation))
-
 
 
 def eval(r, p):
@@ -110,26 +104,54 @@ def eval(r, p):
         sum += err
     return sum / float(len(p))
 
+#myrobot = robot()
+#myrobot.set_noise(5.0, 0.1, 5.0)
+#myrobot.set(30.0, 50.0, pi/2)
+#myrobot = myrobot.move(-pi/2, 15.0)
+#print myrobot.sense()
+#myrobot = myrobot.move(-pi/2, 10.0)
+#print myrobot.sense()
+
+
+### moving robot
+#myrobot = robot()
+# enter code here
+#myrobot.set_noise(5.0,1.0,5.0)# Set Noise
+#myrobot.set(30.0, 50.0, pi/2)
+#myrobot = myrobot.move(-pi/2, 15.0)
+#print myrobot.sense()
+#myrobot = myrobot.move(-pi/2, 10.0)
+#print myrobot.sense()
+
+#Creating Particles
+#N=1000
+#p=[]
+#for i in range(N):
+#    x=robot()
+#    p.append(x)
+#print len(p)    
 
 
 ####   DON'T MODIFY ANYTHING ABOVE HERE! ENTER CODE BELOW ####
-
-### moving robot
 myrobot = robot()
-# enter code here
-myrobot.set_noise(5.0,1.0,5.0)# Set Noise
-myrobot.set(30.0, 50.0, pi/2)
-myrobot = myrobot.move(-pi/2, 15.0)
-print myrobot.sense()
-myrobot = myrobot.move(-pi/2, 10.0)
-print myrobot.sense()
+myrobot = myrobot.move(0.1, 5.0)
+Z = myrobot.sense()
 
-#Creating Particles
-N=1000
-p=[]
+N = 1000
+p = []
 for i in range(N):
-    x=robot()
+    x = robot()
+    x.set_noise(0.05, 0.05, 5.0)
     p.append(x)
-print len(p)    
 
+p2 = []
+for i in range(N):
+    p2.append(p[i].move(0.1, 5.0))
+p = p2
 
+w = []
+#insert code here!
+for i in range(N):
+    w.append(p[i].measurement_prob((0.1, 5.0))
+p = p2
+print w #Please print w for grading purposes.
