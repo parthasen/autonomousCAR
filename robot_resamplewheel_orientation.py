@@ -99,33 +99,6 @@ class robot:
 #myrobot = myrobot.move(-pi/2, 10.0)
 #print myrobot.sense()
 
-myrobot = robot()
-myrobot = myrobot.move(0.1, 5.0)
-Z = myrobot.sense()
-
-N = 1000
-p = []
-for i in range(N):
-    x = robot()
-    x.set_noise(0.05, 0.05, 5.0)
-    p.append(x)
-
-p2 = []
-for i in range(N):
-    p2.append(p[i].move(0.1, 5.0))
-p = p2
-
-w = [] # weight 
-for i in range(N):
-    w.append(p[i].measurement_prob(Z))
-
-
-#### DON'T MODIFY ANYTHING ABOVE HERE! ENTER CODE BELOW ####
-# You should make sure that p3 contains a list with particles
-# resampled according to their weights.
-# Also, DO NOT MODIFY p.
-
-p3 = []
 
 ''' PSEUDO CODE'''
 Resampling Wheel
@@ -138,20 +111,49 @@ while w[index] < beta:
 
 select p[index]
 '''
-### Resampling weel
-p3 = []
-index = int(random.random() * N)
-beta = 0.0
-mw = max(w)
-for i in range(N):
-    beta += random.random() * 2.0 * mw
-    while beta > w[index]:
-        beta -= w[index]
-        index = (index + 1) % N
-    p3.append(p[index])
-p = p3
-print p #Leave this print statement for grading purposes!
 
-### Orientation
+####   DON'T MODIFY ANYTHING ABOVE HERE! ENTER/MODIFY CODE BELOW ####
+myrobot = robot()
+myrobot = myrobot.move(0.1, 5.0)
+Z = myrobot.sense()
+N = 1000
+T = 10 # this T 10 .. for ORIENTATION
+
+p = []
+for i in range(N):
+    r = robot()
+    r.set_noise(0.05, 0.05, 5.0)
+    p.append(r)
+
+for t in range(T):
+    myrobot = myrobot.move(0.1, 5.0)
+    Z = myrobot.sense()
+
+    p2 = []
+    for i in range(N):
+        p2.append(p[i].move(0.1, 5.0))
+    p = p2
+
+    w = []
+    for i in range(N):
+        w.append(p[i].measurement_prob(Z))
+        
+    ### Resampling weel
+    # You should make sure that p3 contains a list with particles
+    # resampled according to their weights.    
+    p3 = []
+    index = int(random.random() * N)
+    beta = 0.0
+    mw = max(w)
+    for i in range(N):
+        beta += random.random() * 2.0 * mw
+        while beta > w[index]:
+            beta -= w[index]
+            index = (index + 1) % N
+        p3.append(p[index])
+    p = p3
+    #enter code here, make sure that you output 10 print statements.
+ 
+
 
 
