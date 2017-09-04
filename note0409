@@ -1,3 +1,4 @@
+## Intro
 #### Accuracy 10 cm is needed. Onboard sensors like Lider, Radar
 #### GPS (avg. 10m accuracy) , IMU has low accuracy but useful for initialization
 #### Map coordinate (x->,Y \/) to car cocoordinate ( car face -> X, Y orthogonal to direction)transformation
@@ -5,7 +6,9 @@
 #### Measurements <- Bayes Rule P(A|B) = P(B|A)*P(A) / P(B)
 #### Total probablity == convolution P(A)=sum([P(A|B)*p(B)])
 https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/2c318113-724b-4f9f-860c-cb334e6e4ad7/lessons/48739381/concepts/485326080923
-#### Markov Localization
+## Overview
+#### https://github.com/parthasen/autonomousCAR/blob/localisation/sense-move.py
+## Markov Localization
 Formal Definition of Variables:
 z1:t represents observations (range measurements, bearing, images, etc.)
 u1:t represents controls (yaw/pitch/roll rates and velocities)
@@ -15,4 +18,9 @@ posterior dis: bel(xt)=p(xt∣z1:t,u1:t,m)
 SLAM: p(xt,m∣z1:t,u1:t)
 #### in 1D case map is m[9,12,24,34,37,39] for six landmarks in distance from vehicle in driving direction.
 #### size of z
+## Motion Models
 
+## Particle filters
+https://github.com/parthasen/autonomousCAR/blob/localisation/robot_particle_weight.py
+https://github.com/parthasen/autonomousCAR/blob/localisation/robot_resamplewheel_orientation.py
+## Implementaton
