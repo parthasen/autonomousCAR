@@ -3,4 +3,7 @@
 #### Map coordinate (x->,Y \/) to car cocoordinate ( car face -> X, Y orthogonal to direction)transformation
 #### Sense and Move cycle https://github.com/parthasen/autonomousCAR/blob/localisation/sense-move.py
 #### Measurements <- Bayes Rule P(A|B) = P(B|A)*P(A) / P(B)
+#### Total probablity == convolution P(A)=sum([P(A|B)*p(B)])
+https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/2c318113-724b-4f9f-860c-cb334e6e4ad7/lessons/48739381/concepts/485326080923
+#### 
 
