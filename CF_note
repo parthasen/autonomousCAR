@@ -1,2 +1,15 @@
 http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0104-65002009000300003
-https://github.com/TKJElectronics
+
+https://github.com/TKJElectronics/Example-Sketch-for-IMU-including-Kalman-filter/blob/master/IMU/MPU6050_HMC5883L/MPU6050_HMC5883L.ino
+https://github.com/tcleg/Six_Axis_Complementary_Filter
+https://github.com/TKJElectronics/Example-Sketch-for-IMU-including-Kalman-filter/blob/master/IMU/MPU6050/MPU6050.ino
+https://github.com/TKJElectronics/Example-Sketch-for-IMU-including-Kalman-filter
+http://www.instructables.com/id/Guide-to-gyro-and-accelerometer-with-Arduino-inclu/
+http://www.pieter-jan.com/node/11
+https://github.com/mattzzw/Arduino-mpu6050
+https://github.com/tcleg/Six_Axis_Complementary_Filter/blob/master/C/six_axis_comp_filter.h
+https://github.com/MarinData/Visuo-inertial-fusion-ROV-ControlSystem/wiki/Complementary-filter
+https://github.com/buildorder/Complementary-Filter-Tuner
+http://wiki.ros.org/imu_complementary_filter
+https://github.com/solenerotech/quadcopterPi/
+
