@@ -124,5 +124,12 @@ print myrobot.sense()
 myrobot = myrobot.move(-pi/2, 10.0)
 print myrobot.sense()
 
+#Creating Particles
+N=1000
+p=[]
+for i in range(N):
+    x=robot()
+    p.append(x)
+print len(p)    
 
 
