@@ -43,7 +43,7 @@ def sense(p, Z):# sense is product of probablity followed by normalization
         q[i] = q[i] / s #normalization of sense function
     return q
 
-def move(p, U):
+def move(p, U):#convolution
     q = []
     for i in range(len(p)):
         s = pExact * p[(i-U) % len(p)]
