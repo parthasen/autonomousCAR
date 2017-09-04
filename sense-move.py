@@ -22,6 +22,7 @@ become [0.05,0.05,0.05,0.8,0.05]. Now we have a more certain guess as to where t
 # distribution over five grid cells, as expressed in a list of 
 # five probabilities.
 
+## Probablity is belief
 p=[0.2, 0.2, 0.2, 0.2, 0.2]
 world=['green', 'red', 'red', 'green', 'green']
 measurements = ['red', 'green']
@@ -32,7 +33,7 @@ pExact = 0.8
 pOvershoot = 0.1
 pUndershoot = 0.1
 
-def sense(p, Z):
+def sense(p, Z):# sense is product of probablity followed by normalization
     q=[]
     for i in range(len(p)):
         hit = (Z == world[i])
