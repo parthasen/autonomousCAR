@@ -116,10 +116,12 @@ def eval(r, p):
 
 ### moving robot
 myrobot = robot()
-myrobot.set(30,50,pi/2)
-myrobot.move(-pi/2,15)
+# enter code here
+myrobot.set(30.0, 50.0, pi/2)
+myrobot = myrobot.move(-pi/2, 15.0)
 print myrobot.sense()
-myrobot.move(-pi/2,10)
+myrobot = myrobot.move(-pi/2, 10.0)
 print myrobot.sense()
+
 
 
