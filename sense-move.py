@@ -18,6 +18,10 @@ become [0.05,0.05,0.05,0.8,0.05]. Now we have a more certain guess as to where t
 #right one, then senses green, then moves right again, 
 #starting with a uniform prior distribution.
 
+# A UNIFORM probability
+# distribution over five grid cells, as expressed in a list of 
+# five probabilities.
+
 p=[0.2, 0.2, 0.2, 0.2, 0.2]
 world=['green', 'red', 'red', 'green', 'green']
 measurements = ['red', 'green']
@@ -35,7 +39,7 @@ def sense(p, Z):
         q.append(p[i] * (hit * pHit + (1-hit) * pMiss))
     s = sum(q)
     for i in range(len(q)):
-        q[i] = q[i] / s
+        q[i] = q[i] / s #normalization of sense function
     return q
 
 def move(p, U):
@@ -49,4 +53,8 @@ def move(p, U):
 #
 # ADD CODE HERE
 #
+for k in range(len(measurements)):
+    p=sense(p,measurements[k])
+    p=move(p,motions[k])
+    
 print p         
