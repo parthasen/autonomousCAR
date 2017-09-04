@@ -11,7 +11,8 @@ z1:t represents observations (range measurements, bearing, images, etc.)
 u1:t represents controls (yaw/pitch/roll rates and velocities)
 m represents the map (grid maps, feature maps)
 xt represents the pose (position (x,y) + orientation θ)
-bel(xt)=p(xt∣z1:t,u1:t,m)
-#### 
-
+posterior dis: bel(xt)=p(xt∣z1:t,u1:t,m)
+SLAM: p(xt,m∣z1:t,u1:t)
+#### in 1D case map is m[9,12,24,34,37,39] for six landmarks in distance from vehicle in driving direction.
+#### size of z
 
