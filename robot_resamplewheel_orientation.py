@@ -90,6 +90,14 @@ class robot:
     def __repr__(self):
         return '[x=%.6s y=%.6s orient=%.6s]' % (str(self.x), str(self.y), str(self.orientation))
 
+def eval(r, p):
+    sum = 0.0;
+    for i in range(len(p)): # calculate mean error
+        dx = (p[i].x - r.x + (world_size/2.0)) % world_size - (world_size/2.0)
+        dy = (p[i].y - r.y + (world_size/2.0)) % world_size - (world_size/2.0)
+        err = sqrt(dx * dx + dy * dy)
+        sum += err
+return sum / float(len(p))
 
 #myrobot = robot()
 #myrobot.set_noise(5.0, 0.1, 5.0)
@@ -153,7 +161,8 @@ for t in range(T):
         p3.append(p[index])
     p = p3
     #enter code here, make sure that you output 10 print statements.
- 
+ # evaluation of error
+ print (eval(myrobot,p))
 
 
 
