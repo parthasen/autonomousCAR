@@ -1,6 +1,13 @@
 # -----------
-# User Instructions:
-# 
+# 1.# search() that returns a list
+# in the form of [optimal path length, row, col]. For
+# the grid shown below, your function should output
+# [11, 4, 5].
+#
+# If there is no valid path from the start point
+# to the goal, your function should return the string
+# 'fail'
+# ----------
 # Modify the function search so that it returns
 # a table of values called expand. This table
 # will keep track of which step each node was
