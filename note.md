@@ -5,3 +5,5 @@ The path planning is one of the key issues of autonomous vehicle. In this paper,
 #### References 
 
   https://github.com/parthasen/autonomousCAR/blob/PathPlan/A%20Behavioral%20Planning%20Framework%20for%20Autonomous%20Driving.pdf
+  
+  https://github.com/parthasen/autonomousCAR/blob/PathPlan/1604.07446.pdf
