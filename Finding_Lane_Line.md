@@ -2,11 +2,11 @@
 http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html
 
 
-import cv2  #bringing in OpenCV libraries
-gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY) #grayscale conversion
-plt.imshow(gray, cmap='gray')
+    import cv2  #bringing in OpenCV libraries
+    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY) #grayscale conversion
+    plt.imshow(gray, cmap='gray')
 
-edges = cv2.Canny(gray, low_threshold, high_threshold)
+    edges = cv2.Canny(gray, low_threshold, high_threshold)
 
 we are applying Canny to the image gray and your output will be another image called edges. low_threshold and high_threshold are your thresholds for edge detection.
 
