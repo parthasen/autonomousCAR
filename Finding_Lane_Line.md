@@ -77,3 +77,5 @@ https://www.udacity.com/course/introduction-to-computer-vision--ud810
 
 In Hough space, I can represent my "x vs. y" line as a point in "m vs. b" instead. The Hough Transform is just the conversion from image space to Hough space. So, the characterization of a line in image space will be a single point at the position (m, b) in Hough space.
 
+https://alyssaq.github.io/2014/understanding-hough-transform/
+
