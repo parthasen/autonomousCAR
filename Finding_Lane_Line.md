@@ -134,3 +134,4 @@ The threshold parameter specifies the minimum number of votes (intersections in 
     plt.imshow(combo)
 
 #### region of interest mask
+Triangular region mask, a quadrilateral region mask using the cv2.fillPoly() function (keep in mind though, you could use this same method to mask an arbitrarily complex polygon region). 
