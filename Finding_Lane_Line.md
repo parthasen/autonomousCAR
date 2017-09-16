@@ -132,3 +132,5 @@ The threshold parameter specifies the minimum number of votes (intersections in 
     # Draw the lines on the edge image
     combo = cv2.addWeighted(color_edges, 0.8, line_image, 1, 0) 
     plt.imshow(combo)
+
+#### region of interest mask
