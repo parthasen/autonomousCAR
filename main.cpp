@@ -160,23 +160,12 @@ vector<double> getXY(double s, double d, const vector<double> &maps_s, const vec
 
 }
 
-double mylane(double car_d)
-{
-	double lane_no;
-	if ((car_d >=0) and (car_d <4.0))
-	{
-		lane_no = 0;
-	}
-		else if ((car_d >=4.0) and (car_d < 8.0))
-	{
-		lane_no = 1;
-	}
-	else if((car_d >=8.0) and (car_d < 12.0))
-	{
-		lane_no = 2;
-	}
-	
-	return lane_no;
+
+
+// get the lane based on frenet coordinates
+int LaneFrenet(double d) {
+  int lane_width=4;
+  return int(floor(d/lane_width));
 }
 
 
@@ -208,20 +197,20 @@ double cost_keep_lane(double dist_closest_front, double num_cars_mylane, double 
 }
 
 
-double cost_change_left(double dist_closest_leftfront,double dist_closest_leftback, double cl_car_dist, double cost_collision, double cost_left_turn, double violate_left)
+double cost_change_left(double dist_closest_leftfront,double dist_closest_leftback, double cl_car_dist, double cost_collision, double cost_left_turn, double lane_ch_left_risk)
 
 {	double cost;
 	
-	if (violate_left  == 1) // Left turn not allowed - collision likely
+	if (lane_ch_left_risk  == 1) // Left turn not allowed - collision likely
 	 {
 		  cost = cost_collision;
 	 }
 	 
 	else 
 	{
-		if ((dist_closest_leftfront >= 1.5*cl_car_dist)  and (dist_closest_leftback >= 0.5*cl_car_dist))// No car is close by on either front or back
+		if ((dist_closest_leftfront >= 1.5*cl_car_dist)  and (dist_closest_leftback >= 0.8*cl_car_dist))// No car is close by on either front or back
 		{
-			if (dist_closest_leftfront >=200)
+			if (dist_closest_leftfront >=40)
 			{
 			cost = cost_left_turn*0.90; // Slight preference if left lane is wide open
 			}
@@ -245,20 +234,20 @@ double cost_change_left(double dist_closest_leftfront,double dist_closest_leftba
 
 
 
-double cost_change_right(double dist_closest_rightfront,double dist_closest_rightback, double cl_car_dist, double cost_collision, double cost_right_turn, double violate_right)
+double cost_change_right(double dist_closest_rightfront,double dist_closest_rightback, double cl_car_dist, double cost_collision, double cost_right_turn, double lane_ch_right_risk)
 
 { 	double cost;
 	
-	if (violate_right  == 1) // Right turn not allowed - collision likely
+	if (lane_ch_right_risk  == 1) // Right turn not allowed - collision likely
 	 {
 		 cost = cost_collision;
 	 }
 	 
 	else 
 	{
-		if ((dist_closest_rightfront >= 1.5*cl_car_dist)  and (dist_closest_rightback >= 0.5*cl_car_dist))// No car is close by on either front or back
+		if ((dist_closest_rightfront >= 1.5*cl_car_dist)  and (dist_closest_rightback >= 0.8*cl_car_dist))// No car is close by on either front or back
 		{
-			if (dist_closest_rightfront >=200)
+			if (dist_closest_rightfront >=40)
 			{
 			cost = cost_right_turn*0.90; // Slight preference if right lane is wide open
 			}
@@ -394,13 +383,11 @@ int main() {
           double pos_y;
           double angle;
           int path_size = previous_path_x.size();
-
           for(int i = 0; i < path_size; i++)
           {
               next_x_vals.push_back(previous_path_x[i]);
               next_y_vals.push_back(previous_path_y[i]);
           }
-
           if(path_size == 0)
           {
               pos_x = car_x;
@@ -411,12 +398,10 @@ int main() {
           {
               pos_x = previous_path_x[path_size-1];
               pos_y = previous_path_y[path_size-1];
-
               double pos_x2 = previous_path_x[path_size-2];
               double pos_y2 = previous_path_y[path_size-2];
               angle = atan2(pos_y-pos_y2,pos_x-pos_x2);
           }
-
           double dist_inc = 0.5;
           for(int i = 0; i < 50-path_size; i++)
           {    
@@ -425,7 +410,6 @@ int main() {
               pos_x += (dist_inc)*cos(angle+(i+1)*(pi()/100));
               pos_y += (dist_inc)*sin(angle+(i+1)*(pi()/100));
           }
-
 */
 
 // Use of spline.h
@@ -467,258 +451,259 @@ int main() {
 		double dist_closest_rightfront = 999;
 		double dist_closest_rightback = 999;
 		double closest_rightfront_vel = 0;
-		double violate_left = 0;
-		double violate_right = 0;
+		double lane_ch_left_risk = 0;
+		double lane_ch_right_risk = 0;
 
-
+		int other_car_lane=0;
 
 
 //##Use of sensor fusion
 
-	if(prev_size>0)
-	{
-	car_s=end_path_s;
-	}
+		if(prev_size>0)
+		{
+			car_s=end_path_s;
+		}
 	
-	bool too_close=false;	
+		bool too_close=false;
+			
+		//my lane number
+		lane=LaneFrenet(car_d);
+		/*	if(lane < 0 || lane > 2)
+                   	continue;
+        		assert(lane >= 0 && lane <=2 );	*/
+		cout<<"my car's lane:"<< lane<<endl;	
 
 //STEP 1: Analyze the senor fusion data and categorize it meaningfully
-            // finding closest cars in all 3 lanes, one in front and one in back
+// finding closest cars in all 3 lanes, one in front and one in back
 
-        for(int i=0; i <sensor_fusion.size();i++)
-        {
+        	for(int i=0; i <sensor_fusion.size();i++)
+       	 	 {
 
-            float d = sensor_fusion[i][6];
+            		float d = sensor_fusion[i][6];
+	    		other_car_lane=LaneFrenet(d);
+	    		cout<<"other_car_lane:"<< other_car_lane<<endl;	
 
-            if(d < (2+4*lane+2) && d > (2+4*lane-2))
-            {
-                int id = sensor_fusion[i][0];
-		double x= sensor_fusion[i][1];
-		double y= sensor_fusion[i][2];
-                double vx = sensor_fusion[i][3];
-                double vy= sensor_fusion[i][4];
-                double check_speed= sqrt(vx*vx+vy*vy);
-                double check_car_s = sensor_fusion[i][5];
-		double d = sensor_fusion[i][6];
-		double dist = distance(car_x,car_y,x,y);
+            		if(other_car_lane >= 0 && other_car_lane <=2)
+            		 {
+                		int id = sensor_fusion[i][0];
+				double x= sensor_fusion[i][1];
+				double y= sensor_fusion[i][2];
+                		double vx = sensor_fusion[i][3];
+                		double vy= sensor_fusion[i][4];
+                		double check_speed= sqrt(vx*vx+vy*vy);
+                		double check_car_s = sensor_fusion[i][5];
+				double dist = distance(car_x,car_y,x,y);
+	
+                		check_car_s+= ((double)prev_size *.02*check_speed);
 		
+				
+			//Categorize traffic as being in one of the 3 lanes
 
-                check_car_s+= ((double)prev_size *.02*check_speed);
+			//my lane
+				if(other_car_lane==lane)
+				{
+					cars_mylane_s.push_back(check_car_s);
+					cars_mylane_vel.push_back(check_speed);
+				}
+
+			// My left lane
+				if (other_car_lane==lane-1)
+				{
+		 			cars_myleft_s.push_back(check_car_s);
+		 			cars_myleft_vel.push_back(check_speed);
+				}
+			//My Right lane
+				else if (other_car_lane==lane+1)
+				{
+		  			cars_myright_s.push_back(check_car_s);
+		  			cars_myright_vel.push_back(check_speed);
+				}
+	
+                		cout<<endl;
+		                cout<<"Traffic_mylane:"<< cars_mylane_s.size()<<endl;
+                		cout<<"Traffic_myleft:"<< cars_myleft_s.size()<<endl;
+                		cout<<"Traffic_myright:"<< cars_myright_s.size()<<endl;;
+                		cout<<endl;
 
 
-		//Categorize traffic as being in one of the 3 lanes
-
-		//my lane number
-		lane=mylane(car_d);
-
-		//my lane
-		if(mylane(sensor_fusion[i][6])==lane)
-		{
-			cars_mylane_s.push_back(check_car_s);
-			cars_mylane_vel.push_back(check_speed);
-		}
-
-		// My left lane
-		if (lane>0 and mylane(sensor_fusion[i][6])==lane-1)
-		{
-		 cars_myleft_s.push_back(check_car_s);
-		 cars_myleft_vel.push_back(check_speed);
-		}
-		//My Right lane
-		else if (lane<=2 and mylane(sensor_fusion[i][6])==lane+1)
-		{
-		  cars_myright_s.push_back(check_car_s);
-		  cars_myright_vel.push_back(check_speed);
-		}
-
-			 
+	     			//Find closest car in my lane
              
-             cout<<endl;
-             cout<<"Traffic_mylane:"<< cars_mylane_s.size()<<endl;
-             cout<<"Traffic_myleft:"<< cars_myleft_s.size()<<endl;
-             cout<<"Traffic_myright:"<< cars_myright_s.size()<<endl;;
-             cout<<endl;
-
-
-	     //Find closest car in my lane
-             
-             if (cars_mylane_s.size() > 0)
-             {
-             for (int i = 0; i< cars_mylane_s.size() ; ++i)
-             {	  double mylane_s = cars_mylane_s[i];
+             			if (cars_mylane_s.size() > 0)
+             			{
+             				for (int i = 0; i< cars_mylane_s.size() ; ++i)
+             				{	  double mylane_s = cars_mylane_s[i];
 				 
-				 double dist_bw = mylane_s - car_s;
-				 if ((dist_bw > 0) and (dist_bw < abs(dist_closest_front)))
-				 {
-					 dist_closest_front  = dist_bw;
-					 closest_front_vel = cars_mylane_vel[i];
+				 		  double dist_bw = mylane_s - car_s;
+				 		if ((dist_bw > 0) and (dist_bw < abs(dist_closest_front)))
+				 		 {
+					 		dist_closest_front  = dist_bw;
+					 		closest_front_vel = cars_mylane_vel[i];
 					
-				 }
-			 }
-		   }
+				 		  }
+			 		}
+		   		}
 	   
 		   
-	     //Find closest cars in left lane
+	     			//Find closest cars in left lane
 		   
-	     if (((car_d -4.0) >= 0) and  ((car_d -4.0) <=4)) // Left lane is practical
-	     {
-	      if (cars_myleft_s.size() == 0) //Empty left lane
-	      {
-		 dist_closest_leftfront = 999;
-		 dist_closest_leftback = 999;
-		 closest_leftfront_vel = 0;
-	      }
+	     			if (other_car_lane==lane-1) // Left lane is practical
+	     			 {
+	      				if (cars_myleft_s.size() == 0) //Empty left lane
+	      				 {
+		 				dist_closest_leftfront = 999;
+		 				dist_closest_leftback = 999;
+		 				closest_leftfront_vel = 0;
+	      				 }
 			 
-	      else
-              {
-               for (int i = 0; i< cars_myleft_s.size() ; ++i)
-               {
-		  double myleft_s = cars_myleft_s[i];
-   		  double dist_front = myleft_s - car_s;
-		  double dist_back = car_s - myleft_s;
-		  if ((dist_front > 0) and (dist_front < abs(dist_closest_leftfront)))
-		  {
-		   dist_closest_leftfront  = dist_front;
-		   closest_leftfront_vel = cars_myleft_vel[i];
-		  }
+	      			        else
+              			         {
+               				    for (int i = 0; i< cars_myleft_s.size() ; ++i)
+               				    {
+		  				double myleft_s = cars_myleft_s[i];
+   		  				double dist_front = myleft_s - car_s;
+		  				double dist_back = car_s - myleft_s;
+		  				if ((dist_front > 0) and (dist_front < abs(dist_closest_leftfront)))
+		  				 {
+		   					dist_closest_leftfront  = dist_front;
+		   					closest_leftfront_vel = cars_myleft_vel[i];
+		  				 }
 				 
-		  if ((dist_back > 0)  and (dist_back< abs(dist_closest_leftback)))
-		  {
-		   dist_closest_leftback  = dist_back;
-		  }
+		  				if ((dist_back > 0)  and (dist_back< abs(dist_closest_leftback)))
+		  				 {
+		   					dist_closest_leftback  = dist_back;
+		  				 }
 				 
-	       }
-	      }
-	    }
+	       			             }
+	      	                          }
+	    	                }
 
-	   else // Never go in left lane
-	   {
-		   violate_left = 1;
-	   }
+	       			else // risk of collision
+	        		 {
+		   			lane_ch_left_risk = 1;
+	        		 }
 		   
-	//Find closest cars in right lane
-        if (((car_d +4.0) >=8) and  ((car_d + 4.0) <=12)) // Right lane is practical
-	{
-	  if (cars_myright_s.size() == 0) //Empty right lane
-	  {
-	 	dist_closest_rightfront = 999;
-		dist_closest_rightback = 999;
-		closest_rightfront_vel = 0;
-	  }
+	       			//Find closest cars in right lane
+               			if (other_car_lane==lane+1) // Right lane is practical
+				 {
+	  				if (cars_myright_s.size() == 0) //Empty right lane
+	  				 {
+	 					dist_closest_rightfront = 999;
+						dist_closest_rightback = 999;
+						closest_rightfront_vel = 0;
+	  				 }
 			 
-	  else
-          {
-             for (int i = 0; i< cars_myright_s.size() ; ++i)
-             {	  double myright_s = cars_myright_s[i];
+	  				else
+          			 	{
+             					for (int i = 0; i< cars_myright_s.size() ; ++i)
+             				 	{	  double myright_s = cars_myright_s[i];
 				 
-				 double dist_front = myright_s - car_s;
-				 double dist_back = car_s - myright_s;
-				 if ((dist_front > 0) and (dist_front < abs(dist_closest_rightfront)))
-				 {
-					 dist_closest_rightfront  = dist_front;
-					  closest_rightfront_vel = cars_myright_vel[i];
-				 }
+				 		  	double dist_front = myright_s - car_s;
+				 		  	double dist_back = car_s - myright_s;
+				 		 	if ((dist_front > 0) and (dist_front < abs(dist_closest_rightfront)))
+				 		  	 {
+					 			dist_closest_rightfront  = dist_front;
+					 			closest_rightfront_vel = cars_myright_vel[i];
+						  	 }
+						 
+				  		 	if ((dist_back > 0)  and (dist_back< abs(dist_closest_rightback)))
+				 		  	 {
+					 			dist_closest_rightback  = dist_back;
+				 		  	 }
 				 
-				  if ((dist_back > 0)  and (dist_back< abs(dist_closest_rightback)))
-				 {
-					 dist_closest_rightback  = dist_back;
-				 }
-				 
-	     }
-	  }
-	}
+	     				   	}
+	  				}
+				}
 
 
-	else// Never go in right lane
-	{
-		   violate_right = 1;
-	}
+				else// lane change is collision prone
+				{
+		   			lane_ch_right_risk = 1;
+				}
 	  
-	cout<<endl;
-	//double d = sensor_fusion[i][6]; //already declared 
-	lane=mylane(car_d); // only to check lane no, again used later
-	cout<<"my car lane no:"<<lane<<endl;// lane of my car
-	cout<<"dist_closest_front:"<< dist_closest_front<<endl;	    
-	cout<<"Dist closest left_front:"<< dist_closest_leftfront<<endl;
-	cout<<"Dist closest left_back:"<< dist_closest_leftback<<endl;
-	cout<<"Dist closest right_front:"<< dist_closest_rightfront<<endl;
-	cout<<"Dist closest right_back:"<< dist_closest_rightback<<endl;
+				cout<<endl;
+				//double d = sensor_fusion[i][6]; //already declared 
+				cout<<"my car lane no:"<<lane<<endl;// lane of my car
+				cout<<"dist_closest_front:"<< dist_closest_front<<endl;	    
+				cout<<"Dist closest left_front:"<< dist_closest_leftfront<<endl;
+				cout<<"Dist closest left_back:"<< dist_closest_leftback<<endl;
+				cout<<"Dist closest right_front:"<< dist_closest_rightfront<<endl;
+				cout<<"Dist closest right_back:"<< dist_closest_rightback<<endl;
 		      
-	//Checks is lane changes into that lane are allowed
-	//cout<<"Violate_left: "<<violate_left << endl;  
-	//cout<<"Violate Right :"<< violate_right<<endl;
+				//Checks is lane changes into that lane are allowed
+				//cout<<"lane_ch_left_risk: "<<lane_ch_left_risk << endl;  
+				//cout<<"lane_ch_left_risk :"<< lane_ch_right_risk<<endl;
 
 
 //STEP 2: Calculate cost of actions and choose the one with minimum cost
 		    
-	double cl_car_dist = 50;
-	double cost_collision = 500;
-	double cost_left_turn = 150;
-	double cost_right_turn = 150;
-	double cost_slow_down = 200;
+				double cl_car_dist = 30;
+				double cost_collision = 500;
+				double cost_left_turn = 150;
+				double cost_right_turn = 150;
+				double cost_slow_down = 200;
 		    
-        double continue_lane_tc;
-        double brake_tc;
-        double left_turn_tc;
-        double right_turn_tc;
+        			double continue_lane_tc;
+       				double brake_tc;
+		        	double left_turn_tc;
+		        	double right_turn_tc;
             
-        int decision = 999;
-        double min_cost = 800;
-        vector<double> costs;
+		        	int decision = 999;
+		        	double min_cost = 800;
+		        	vector<double> costs;
              
-        continue_lane_tc = cost_keep_lane(dist_closest_front, cars_mylane_s.size() ,cl_car_dist, cost_collision);
-        costs.push_back(continue_lane_tc);
+		        	continue_lane_tc = cost_keep_lane(dist_closest_front, cars_mylane_s.size() ,cl_car_dist, cost_collision);
+		        	costs.push_back(continue_lane_tc);
             
-        brake_tc = cost_brake(cost_slow_down);
-        costs.push_back(brake_tc);
+		        	brake_tc = cost_brake(cost_slow_down);
+		        	costs.push_back(brake_tc);
             
-        left_turn_tc =  cost_change_left(dist_closest_leftfront,dist_closest_leftback,cl_car_dist, cost_collision, cost_left_turn, violate_left);
-        costs.push_back(left_turn_tc);
+		        	left_turn_tc =  cost_change_left(dist_closest_leftfront,dist_closest_leftback,cl_car_dist, cost_collision, 						cost_left_turn,lane_ch_left_risk);
+        			costs.push_back(left_turn_tc);
              
              
-        right_turn_tc = cost_change_right(dist_closest_rightfront, dist_closest_rightback,cl_car_dist, cost_collision, cost_right_turn, violate_right);
-        costs.push_back(right_turn_tc);
+        			right_turn_tc = cost_change_right(dist_closest_rightfront, dist_closest_rightback,cl_car_dist, cost_collision, 						cost_right_turn,lane_ch_right_risk);
+		        	costs.push_back(right_turn_tc);
              
-	cout<<"Cost continue lane" <<continue_lane_tc<<endl;
+	/*cout<<"Cost continue lane" <<continue_lane_tc<<endl;
 	cout<<"Cost slow down" <<brake_tc<<endl;
         cout<<"Cost left turn" <<left_turn_tc<<endl;
-        cout<<"Cost Right turn" <<right_turn_tc<<endl;
+        cout<<"Cost Right turn" <<right_turn_tc<<endl;*/
              
              
-        // Find the action with minimum cost
+        	// Find the action with minimum cost
              
-        for (int i = 0; i< costs.size() ; ++i)
+        			for (int i = 0; i< costs.size() ; ++i)
              
-        {
-		double cost_ = costs[i];
+        			 {
+					double cost_ = costs[i];
 				
-		if (cost_ < min_cost)
-		 {
-			 min_cost = cost_;
-			 decision = i;
-		 }
+					if (cost_ < min_cost)
+		 			 {
+						 min_cost = cost_;
+			 			decision = i;
+		 			 }
 			 
-	}
+				}
 			 
-	if (decision == 0)
-	{
-		 cout<< "Decision: Stay in lane with max vel" <<endl;
-	}
+				if (decision == 0)
+				{
+		 			cout<< "Decision: Stay in lane with max vel" <<endl;
+				}
 			 
-	else if (decision == 1)
-	{
-		 cout<< "Decision: Stay in lane but slow down" <<endl;
-	}
+				else if (decision == 1)
+				{
+		 			cout<< "Decision: Stay in lane but slow down" <<endl;
+				}
 			 
-	else if (decision == 2)
-	{
-		 cout<< "Decision: Change to left lane" <<endl;
-        }
-	else
-	{
-	 	cout<< "Decision: Change to right lane" <<endl;
+				else if (decision == 2)
+				{
+		 			cout<< "Decision: Change to left lane" <<endl;
+        			}
+				else
+				{
+	 				cout<< "Decision: Change to right lane" <<endl;
 				  
-	}
+				}
 			 
            
         // decision = 0 ; stay in current lane at max speed
@@ -726,43 +711,39 @@ int main() {
         // decision = 2; change to left lane
         // decision = 3 ; change to right lane
              
-        cout<<"Min cost: "<< min_cost<<endl;
-	cout <<"Decision is:" <<decision<<endl;
-	cout<<"Velocity of closest front: "<<closest_front_vel<<endl;
+        			//cout<<"Min cost: "<< min_cost<<endl;
+				cout <<"Decision is:" <<decision<<endl;
+				//cout<<"Velocity of closest front: "<<closest_front_vel<<endl;
 	
+				if((check_car_s>car_s) && ((check_car_s-car_s)<30))
+ 				{
+					//ref_vel=29.5;
+					too_close=true;
+				
+					//velocity control
+					if(too_close and decision==1)
+					{
+						ref_vel-=0.4;
+					}
+					else if(ref_vel<49.5 and decision==0)
+					{
+						ref_vel+=0.224;
+					}
+				
 
 
-
-	//velocity control
-	if(decision==1)
-	{
-	ref_vel-=0.4;
-	}
-	if(ref_vel<49.5 and decision==0)
-	{
-	ref_vel+=0.4;
-	}
-	//Lane change
-	if(lane<2  and decision==3)//and cars_myright_s.size()==0
-	{
-	lane=lane+1;
-	}
-	if(lane>0 and decision==2)
-	{
-	lane=lane-1;
-	}
-        }
-   }
-
-//velocity control
-	if(too_close)
-	{
-	ref_vel-=0.4;
-	}
-	else if(ref_vel<49.5)
-	{
-	ref_vel+=0.234;
-	}
+					//Lane change
+					if(lane<2  and decision==3)//and cars_myright_s.size()==0
+					{
+						lane=lane+1;
+					}
+					if(lane>0 and decision==2)
+					{
+						lane=lane-1;
+					}
+				}
+        		}
+   		    }
 
 
                     if(prev_size < 2)
