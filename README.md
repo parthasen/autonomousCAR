@@ -1,6 +1,7 @@
 # AIRSIM
 1. Unreal account created with github req
-2.     
+2. clone Unreal
+
      #go to folder where you clone GitHub projects
      git clone -b 4.17 https://github.com/EpicGames/UnrealEngine.git
      cd UnrealEngine
