@@ -25,7 +25,7 @@
 
 
 
-
+The simulation framework includes an API for downloading data collected from GPS and other sensors, including visual data, and to control vehicles. The project includes Windows builds, and Microsoft will soon make Linux ones available. Other platforms are easily supported because the code is built with cross-platform in mind, making use of CMake. Microsoft works on supporting ZeroMQ and Protobuf, and other languages such as Python.
 
 
 #### REF
@@ -35,3 +35,7 @@ https://github.com/Microsoft/AirSim
 https://github.com/Microsoft/AirSim/blob/master/docs/using_car.md
 
 https://github.com/Microsoft/AirSim/blob/master/docs/build_linux.md
+
+https://www.microsoft.com/en-us/research/project/aerial-informatics-robotics-platform/
+
+https://dev.px4.io/en/simulation/airsim.html
