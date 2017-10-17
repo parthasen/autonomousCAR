@@ -39,3 +39,5 @@ https://github.com/Microsoft/AirSim/blob/master/docs/build_linux.md
 https://www.microsoft.com/en-us/research/project/aerial-informatics-robotics-platform/
 
 https://dev.px4.io/en/simulation/airsim.html
+
+https://docs.unrealengine.com/latest/INT/Platforms/Linux/BeginnerLinuxDeveloper/SettingUpAnUnrealWorkflow/4/index.html
