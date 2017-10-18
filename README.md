@@ -10,6 +10,9 @@
           ./Setup.sh
           ./GenerateProjectFiles.sh
           make
+
+**octo@octo:~/myAIRSIM/UnrealEngine$**
+
 3. clone AirSIM and build
 
           # go to folder where you clone GitHub projects
@@ -20,8 +23,8 @@
           ./Setup.sh
           ./GenerateProjectFiles.sh
           make
-
-
+**octo@octo:~/myAIRSIM$ 
+octo@octo:~/myAIRSIM/UnrealEngine$**
 
 
 
