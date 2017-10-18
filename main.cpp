@@ -203,7 +203,7 @@ double cost_change_left(double dist_closest_leftfront,double dist_closest_leftba
 	
 	if (lane_ch_left_risk  == 1) // Left turn not allowed - collision likely
 	 {
-		  cost = cost_collision;
+		  cost = 180;// lane change risk
 	 }
 	 
 	else 
@@ -212,7 +212,7 @@ double cost_change_left(double dist_closest_leftfront,double dist_closest_leftba
 		{
 			if (dist_closest_leftfront >=40)
 			{
-			cost = cost_left_turn*0.90; // Slight preference if left lane is wide open
+			cost = cost_left_turn*0.60; // Slight preference if left lane is wide open
 			}
 			
 			else
@@ -240,7 +240,7 @@ double cost_change_right(double dist_closest_rightfront,double dist_closest_righ
 	
 	if (lane_ch_right_risk  == 1) // Right turn not allowed - collision likely
 	 {
-		 cost = cost_collision;
+		 cost = 180;
 	 }
 	 
 	else 
@@ -249,7 +249,7 @@ double cost_change_right(double dist_closest_rightfront,double dist_closest_righ
 		{
 			if (dist_closest_rightfront >=40)
 			{
-			cost = cost_right_turn*0.90; // Slight preference if right lane is wide open
+			cost = cost_right_turn*0.60; // Slight preference if right lane is wide open
 			}
 			
 			else
@@ -637,10 +637,10 @@ int main() {
 //STEP 2: Calculate cost of actions and choose the one with minimum cost
 		    
 				double cl_car_dist = 30;
-				double cost_collision = 500;
+				double cost_collision = 600;
 				double cost_left_turn = 150;
 				double cost_right_turn = 150;
-				double cost_slow_down = 200;
+				double cost_slow_down = 100;
 		    
         			double continue_lane_tc;
        				double brake_tc;
