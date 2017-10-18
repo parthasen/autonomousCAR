@@ -23,8 +23,8 @@
           ./Setup.sh
           ./GenerateProjectFiles.sh
           make
-**octo@octo:~/myAIRSIM$ 
-octo@octo:~/myAIRSIM/UnrealEngine$**
+**octo@octo:~/myAIRSIM$**
+**octo@octo:~/myAIRSIM/UnrealEngine$**
 
 
 
