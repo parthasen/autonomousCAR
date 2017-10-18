@@ -22,7 +22,7 @@
           ./build.sh
           
 **octo@octo:~/myAIRSIM$**
-**octo@octo:~/myAIRSIM/UnrealEngine$**
+**octo@octo:~/myAIRSIM/AirSim$**
 
 
 
