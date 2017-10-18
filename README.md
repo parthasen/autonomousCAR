@@ -13,10 +13,11 @@
 
 **octo@octo:~/myAIRSIM/UnrealEngine$**
 
-*. To open Unreal Editor
-cd Engine/Binaries/Linux/ 
-./UE4Editor
-octo@octo:~/myAIRSIM/UnrealEngine/Engine/Binaries/Linux$ ./UE4Editor
+##### To open Unreal Editor
+
+          cd Engine/Binaries/Linux/ 
+          ./UE4Editor
+          octo@octo:~/myAIRSIM/UnrealEngine/Engine/Binaries/Linux$ ./UE4Editor
 
 
 3. clone AirSIM and build
