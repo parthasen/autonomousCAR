@@ -307,27 +307,19 @@ int main() {
 */
 
 // Use of spline.h
-		    int prev_size=previous_path_x.size();
-	
-		    vector<double> ptsx;
-                    vector<double> ptsy;
+	int prev_size=previous_path_x.size();
+	vector<double> ptsx;
+        vector<double> ptsy;
 
-                    double ref_x = car_x;
-                    double ref_y = car_y;
-                    double ref_yaw = deg2rad(car_yaw);
-                    //car_speed = car_speed*2.237;
+        double ref_x = car_x;
+        double ref_y = car_y;
+        double ref_yaw = deg2rad(car_yaw);
+        //car_speed = car_speed*2.237;
 
 //## USE of SENSOR FUSION data
 
 //Start looking at sensor fusion data,cout<<"Sensor Fusion data"<< sensor_fusion;
 
-        vector<double> cars_mylane_s;
-        vector<double> cars_myleft_s;
-        vector<double> cars_myright_s;
-            
-        vector<double> cars_mylane_vel;
-        vector<double> cars_myleft_vel;
-        vector<double> cars_myright_vel;
               
         double target_d;
         double target_s_inc;
@@ -335,17 +327,14 @@ int main() {
 	double dist_closest_front = 999;
 	double closest_front_vel = 0;
 		 
-	double dist_closest_leftfront = 999;
-	double dist_closest_leftback = 999;
-	double closest_leftfront_vel = 0;
+	double dist_closest_left = 999;
+	double closest_left_vel = 0;
 			 
-	double dist_closest_rightfront = 999;
-	double dist_closest_rightback = 999;
-	double closest_rightfront_vel = 0;
+	double dist_closest_right = 999;
+	double closest_right_vel = 0;
 
 	int other_car_lane=0;
 
-	int decision = 999;
 
 //##Use of sensor fusion
 
@@ -369,6 +358,9 @@ int main() {
 
             float d = sensor_fusion[i][6];
 	    other_car_lane=LaneFrenet(d);
+
+	    //my lane number
+	    lane=LaneFrenet(car_d);
 
 	    if(lane < 0 || lane > 2)
 		continue;
@@ -397,143 +389,61 @@ int main() {
 		//my lane
 		if(other_car_lane==lane)
 		{
-			cars_mylane_s.push_back(check_car_s);
-			cars_mylane_vel.push_back(check_speed);
+			dist_closest_front=abs(check_car_s-car_s);
+			closest_front_vel=check_speed-car_speed;
 		}
 		// My left lane
 		if (other_car_lane==lane-1)
 		{
-			cars_myleft_s.push_back(check_car_s);
-			cars_myleft_vel.push_back(check_speed);
+			dist_closest_left =abs(check_car_s-car_s);
+			closest_left_vel=check_speed-car_speed;
 		}
 		//My Right lane
 		else if (other_car_lane==lane+1)
 		{
-			cars_myright_s.push_back(check_car_s);
-		  	cars_myright_vel.push_back(check_speed);
+	 		dist_closest_right =abs(check_car_s-car_s);
+			closest_right_vel=check_speed-car_speed;
 		}
 
 
-                cout<<endl;
-		cout<<"Traffic_mylane:"<< cars_mylane_s.size()<<endl;
-                cout<<"Traffic_myleft:"<< cars_myleft_s.size()<<endl;
-                cout<<"Traffic_myright:"<< cars_myright_s.size()<<endl;;
-                cout<<endl;
-
-	     	//Find closest car in my lane
-             	if (cars_mylane_s.size() > 0)
-             	{
-             		for (int i = 0; i< cars_mylane_s.size() ; ++i)
-             		{ double mylane_s = cars_mylane_s[i];
-			  double dist_bw = mylane_s - car_s;
-				if ((dist_bw > 0) and (dist_bw < abs(dist_closest_front)))
-				{
-					dist_closest_front  = dist_bw;
-					closest_front_vel = cars_mylane_vel[i];
-				}
-			}
-		 }
-
-		//Find closest cars in left lane
-		   
-	     	if (other_car_lane==lane-1) // Left lane is practical
-	     	{
-	      		if (cars_myleft_s.size() == 0) //Empty left lane
-	      		{
-				dist_closest_leftfront = 999;
-				dist_closest_leftback = 999;
-				closest_leftfront_vel = 0;
-	      		}
-			else
-              		{
-               			for (int i = 0; i< cars_myleft_s.size() ; ++i)
-               			{
-		  			double myleft_s = cars_myleft_s[i];
-   		  			double dist_front = myleft_s - car_s;
-		  			double dist_back = car_s - myleft_s;
-		  			if ((dist_front > 0) and (dist_front < abs(dist_closest_leftfront)))
-		  			{
-		   				dist_closest_leftfront  = dist_front;
-		   				closest_leftfront_vel = cars_myleft_vel[i];
-		  			}
-					if ((dist_back > 0)  and (dist_back< abs(dist_closest_leftback)))
-		  			{
-		   				dist_closest_leftback  = dist_back;
-		  			}
-	    			}
-	      	         }
-	    	}
-
-
-		//Find closest cars in right lane
-               	if (other_car_lane==lane+1) // Right lane is practical
-		{
-	  		if (cars_myright_s.size() == 0) //Empty right lane
-	  		{
-	 			dist_closest_rightfront = 999;
-				dist_closest_rightback = 999;
-				closest_rightfront_vel = 0;
-	  		}
-			else
-          		{
-             			for (int i = 0; i< cars_myright_s.size() ; ++i)
-             		 	{	double myright_s = cars_myright_s[i];
-					double dist_front = myright_s - car_s;
-					double dist_back = car_s - myright_s;
-				 	if ((dist_front > 0) and (dist_front < abs(dist_closest_rightfront)))
-				 	{
-						dist_closest_rightfront  = dist_front;
-						closest_rightfront_vel = cars_myright_vel[i];
-					}
-					if ((dist_back > 0)  and (dist_back< abs(dist_closest_rightback)))
-				 	{
-						dist_closest_rightback  = dist_back;
-				 	}
-				 
-	     			}
-	  		}
-		}
-
+     	
 		cout<<endl;
 		//double d = sensor_fusion[i][6]; //already declared 
 		cout<<"my car lane no:"<<lane<<endl;// lane of my car
 		cout<<"dist_closest_front:"<< dist_closest_front<<endl;	    
-		cout<<"Dist closest left_front:"<< dist_closest_leftfront<<endl;
-		cout<<"Dist closest left_back:"<< dist_closest_leftback<<endl;
-		cout<<"Dist closest right_front:"<< dist_closest_rightfront<<endl;
-		cout<<"Dist closest right_back:"<< dist_closest_rightback<<endl;
-		      
-		//Checks is lane changes into that lane are allowed
-		//cout<<"lane_ch_left_risk: "<<lane_ch_left_risk << endl;  
-		//cout<<"lane_ch_left_risk :"<< lane_ch_right_risk<<endl;
+		cout<<"Dist closest left:"<< dist_closest_left<<endl;
+		cout<<"Dist closest right:"<< dist_closest_right<<endl;
+		cout<<"closest_front_vel: "<<closest_front_vel << endl;  
+		cout<<"closest_left_vel:"<< closest_left_vel<<endl;
+		cout<<"closest_right_vel:"<< closest_right_vel<<endl;
 
 //STEP 2: Calculate cost of actions and choose the one with minimum cost
 //https://github.com/parthasen/autonomousCAR/blob/ea3872d2db9a8d6f3ee0b54f3f428eec280210c5/main.cpp
 
 
-                if((check_car_s>car_s) && (dist_closest_front<50))
+                if(dist_closest_front<50)
                 {
                   //ref_vel=29.5;
 		   too_close=true;
 	   	   //Lane change
 		   if(lane==1)//and cars_myright_s.size()==0
 		   {
-			if(dist_closest_leftfront>50 && dist_closest_leftback>20 && cars_myleft_s<cars_myright_s)
+			if(dist_closest_left>50 && dist_closest_left>dist_closest_right)
 				lane=lane-1;
-			if(dist_closest_rightfront>50 && dist_closest_rightfront>20 && cars_myleft_s>cars_myright_s)
+			if(dist_closest_right>50 && dist_closest_left<dist_closest_right )
 				lane=lane+1;
 			
 		   }
-		   if(lane==2 && dist_closest_leftfront>50 && dist_closest_leftback>20)
+		   if(lane==2 && dist_closest_left>50 && dist_closest_left>dist_closest_right)
 		   {
 			lane=lane-1;
 		   }
 
-		   if(lane==0 && dist_closest_rightfront>50 && dist_closest_rightfront>20)
+		   if(lane==0 && dist_closest_right>50 && dist_closest_left<dist_closest_right)
 		   {
 			lane=lane+1;
 		   }
-		   if(dist_closest_rightfront<50 && dist_closest_leftfront<50)
+		   if(dist_closest_right<50 || dist_closest_left<50)
 		   {
 			ref_vel-=0.4;
 		   }
