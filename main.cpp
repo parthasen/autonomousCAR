@@ -321,20 +321,31 @@ int main() {
 //Start looking at sensor fusion data,cout<<"Sensor Fusion data"<< sensor_fusion;
 
               
+        vector<double> cars_mylane_s;
+        vector<double> cars_myleft_s;
+        vector<double> cars_myright_s;
+            
+        vector<double> cars_mylane_vel;
+        vector<double> cars_myleft_vel;
+        vector<double> cars_myright_vel;
+              
         double target_d;
         double target_s_inc;
         		 
 	double dist_closest_front = 999;
 	double closest_front_vel = 0;
 		 
-	double dist_closest_left = 999;
-	double closest_left_vel = 0;
+	double dist_closest_leftfront = 999;
+	double dist_closest_leftback = 999;
+	double closest_leftfront_vel = 0;
 			 
-	double dist_closest_right = 999;
-	double closest_right_vel = 0;
+	double dist_closest_rightfront = 999;
+	double dist_closest_rightback = 999;
+	double closest_rightfront_vel = 0;
+	double lane_ch_left_risk = 0;
+	double lane_ch_right_risk = 0;
 
 	int other_car_lane=0;
-
 
 //##Use of sensor fusion
 
@@ -371,7 +382,7 @@ int main() {
 	    assert(other_car_lane >= 0 && other_car_lane <=2 );
 	    //cout<<"other_car_lane:"<< other_car_lane<<endl;	
 
-            if(LaneFrenet(d))
+            if(other_car_lane >= 0 && other_car_lane <=2)
             {
             	int id = sensor_fusion[i][0];
 		double x= sensor_fusion[i][1];
@@ -389,82 +400,160 @@ int main() {
 		//my lane
 		if(other_car_lane==lane)
 		{
-			dist_closest_front=abs(check_car_s-car_s);
-			closest_front_vel=check_speed-car_speed;
+			cars_mylane_s.push_back(check_car_s);
+			cars_mylane_vel.push_back(check_speed);
 		}
 		// My left lane
 		if (other_car_lane==lane-1)
 		{
-			dist_closest_left =abs(check_car_s-car_s);
-			closest_left_vel=check_speed-car_speed;
+			cars_myleft_s.push_back(check_car_s);
+			cars_myleft_vel.push_back(check_speed);
 		}
 		//My Right lane
 		else if (other_car_lane==lane+1)
 		{
-	 		dist_closest_right =abs(check_car_s-car_s);
-			closest_right_vel=check_speed-car_speed;
+			cars_myright_s.push_back(check_car_s);
+		  	cars_myright_vel.push_back(check_speed);
+		}
+
+		//Find closest car in my lane
+             	if (cars_mylane_s.size() > 0)
+             	{
+             		for (int i = 0; i< cars_mylane_s.size() ; ++i)
+             		{ double mylane_s = cars_mylane_s[i];
+			  double dist_bw = mylane_s - car_s;
+				if ((dist_bw > 0) and (dist_bw < abs(dist_closest_front)))
+				{
+					dist_closest_front  = dist_bw;
+					closest_front_vel = cars_mylane_vel[i];
+				}
+			}
+		 }
+
+		//Find closest cars in left lane
+		   
+	     	if (other_car_lane==lane-1) // Left lane is practical
+	     	{
+	      		if (cars_myleft_s.size() == 0) //Empty left lane
+	      		{
+				dist_closest_leftfront = 999;
+				dist_closest_leftback = 999;
+				closest_leftfront_vel = 0;
+	      		}
+			else
+              		{
+               			for (int i = 0; i< cars_myleft_s.size() ; ++i)
+               			{
+		  			double myleft_s = cars_myleft_s[i];
+   		  			double dist_front = myleft_s - car_s;
+		  			double dist_back = car_s - myleft_s;
+		  			if ((dist_front > 0) and (dist_front < abs(dist_closest_leftfront)))
+		  			{
+		   				dist_closest_leftfront  = dist_front;
+		   				closest_leftfront_vel = cars_myleft_vel[i];
+		  			}
+					if ((dist_back > 0)  and (dist_back< abs(dist_closest_leftback)))
+		  			{
+		   				dist_closest_leftback  = dist_back;
+		  			}
+	    			}
+	      	         }
+	    	}
+
+		//Find closest cars in right lane
+               	if (other_car_lane==lane+1) // Right lane is practical
+		{
+	  		if (cars_myright_s.size() == 0) //Empty right lane
+	  		{
+	 			dist_closest_rightfront = 999;
+				dist_closest_rightback = 999;
+				closest_rightfront_vel = 0;
+	  		}
+			else
+          		{
+             			for (int i = 0; i< cars_myright_s.size() ; ++i)
+             		 	{	double myright_s = cars_myright_s[i];
+					double dist_front = myright_s - car_s;
+					double dist_back = car_s - myright_s;
+				 	if ((dist_front > 0) and (dist_front < abs(dist_closest_rightfront)))
+				 	{
+						dist_closest_rightfront  = dist_front;
+						closest_rightfront_vel = cars_myright_vel[i];
+					}
+					if ((dist_back > 0)  and (dist_back< abs(dist_closest_rightback)))
+				 	{
+						dist_closest_rightback  = dist_back;
+				 	}
+				 
+	     			}
+	  		}
 		}
 
 
-     	
-		cout<<endl;
-		//double d = sensor_fusion[i][6]; //already declared 
+                cout<<endl;
 		cout<<"my car lane no:"<<lane<<endl;// lane of my car
+		cout<<"my car speed:"<<car_speed<<endl;// lane of my car
+		cout<<"my ref_car speed:"<<ref_vel<<endl;// lane of my car
+		cout<<"Traffic_mylane:"<< cars_mylane_s.size()<<endl;
+                cout<<"Traffic_myleft:"<< cars_myleft_s.size()<<endl;
+                cout<<"Traffic_myright:"<< cars_myright_s.size()<<endl;
+
 		cout<<"dist_closest_front:"<< dist_closest_front<<endl;	    
-		cout<<"Dist closest left:"<< dist_closest_left<<endl;
-		cout<<"Dist closest right:"<< dist_closest_right<<endl;
-		cout<<"closest_front_vel: "<<closest_front_vel << endl;  
-		cout<<"closest_left_vel:"<< closest_left_vel<<endl;
-		cout<<"closest_right_vel:"<< closest_right_vel<<endl;
+		cout<<"Dist closest left_front:"<< dist_closest_leftfront<<endl;
+		cout<<"Dist closest left_back:"<< dist_closest_leftback<<endl;
+		cout<<"Dist closest right_front:"<< dist_closest_rightfront<<endl;
+		cout<<"Dist closest right_back:"<< dist_closest_rightback<<endl;
+                cout<<endl;
+
 
 //STEP 2: Calculate cost of actions and choose the one with minimum cost
 //https://github.com/parthasen/autonomousCAR/blob/ea3872d2db9a8d6f3ee0b54f3f428eec280210c5/main.cpp
 
 
-                if(dist_closest_front<50)
+                if(dist_closest_front<30)
                 {
                   //ref_vel=29.5;
 		   too_close=true;
 	   	   //Lane change
 		   if(lane==1)//and cars_myright_s.size()==0
 		   {
-			if(dist_closest_left>50 && dist_closest_left>dist_closest_right)
+			if(dist_closest_leftfront>50 && dist_closest_leftback>20 && dist_closest_leftfront>dist_closest_rightfront)
 				lane=lane-1;
-			if(dist_closest_right>50 && dist_closest_left<dist_closest_right )
+			if(dist_closest_rightfront>50 && dist_closest_rightback>20 && dist_closest_leftfront<dist_closest_rightfront )
 				lane=lane+1;
 			
 		   }
-		   if(lane==2 && dist_closest_left>50 && dist_closest_left>dist_closest_right)
+		   if(lane==2 && dist_closest_leftfront>50 && dist_closest_leftback>20 && dist_closest_leftfront>dist_closest_rightfront)
 		   {
 			lane=lane-1;
 		   }
 
-		   if(lane==0 && dist_closest_right>50 && dist_closest_left<dist_closest_right)
+		   if(lane==0 && dist_closest_rightfront>50 && dist_closest_rightback>20 && dist_closest_leftfront<dist_closest_rightfront)
 		   {
 			lane=lane+1;
 		   }
-		   if(dist_closest_right<50 || dist_closest_left<50)
-		   {
-			ref_vel-=0.4;
-		   }
+		   //if(too_close)
+		   //{
+			//ref_vel-=0.3;
+		   //}
                 }
 
-		else if(ref_vel<45 && dist_closest_front>50)
-		   {
-		   	ref_vel+=0.224;
-		   }
+		//else if(ref_vel<49.5 && dist_closest_front>50)
+		  // {
+		   //	ref_vel+=0.15;
+		   //}
             }
         }
 
-		/*   //velocity control
+		   //velocity control
 		   if(too_close)
 		   {
 			ref_vel-=0.4;
 		   }
-		   else if(ref_vel<45)
+		   else if(ref_vel<49.5 && dist_closest_front>50)
 		   {
 		   	ref_vel+=0.224;
-		   }*/
+		   }
 
 
                     if(prev_size < 2)
@@ -494,9 +583,9 @@ int main() {
                         ptsy.push_back(ref_y);
 
                     }
-                    vector<double> next_wp0 = getXY(car_s+30,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
-                    vector<double> next_wp1 = getXY(car_s+60,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
-                    vector<double> next_wp2 = getXY(car_s+90,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
+                    vector<double> next_wp0 = getXY(car_s+50,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
+                    vector<double> next_wp1 = getXY(car_s+100,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
+                    vector<double> next_wp2 = getXY(car_s+150,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
 
                     ptsx.push_back(next_wp0[0]);
                     ptsx.push_back(next_wp1[0]);
