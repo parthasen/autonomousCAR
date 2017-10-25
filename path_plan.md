@@ -1,4 +1,4 @@
-# Path-Planning-Project
+# Path-Planning: C++
 
 ###  Introduction
 1. Safe navigation of my car around a virtual highway with other traffic that is driving +-10 MPH of the 50 MPH speed limit.
