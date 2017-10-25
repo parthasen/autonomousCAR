@@ -1,5 +1,5 @@
 # Path-Planning: C++
-![GitHub Logo](/images/logo.png)
+
 ![virtual highway] (https://github.com/parthasen/autonomousCAR/blob/PathPlan/A282D019-B337-470B-AE4A-8570925E2A5F.jpeg)
 
 ###  Introduction
