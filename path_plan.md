@@ -2,6 +2,8 @@
 
 ![virtual highway](https://github.com/parthasen/autonomousCAR/blob/PathPlan/A282D019-B337-470B-AE4A-8570925E2A5F.jpeg)
 
+[![path planning](https://i.ytimg.com/vi/6wQ-ZuB_LRY/1.jpg?time=1508952972088)](https://www.youtube.com/edit?video_referrer=watch&video_id=6wQ-ZuB_LRY)
+
 ###  Introduction
 My car is running with maximum speed of 49.5. Already covered 20 miles and running in right track strating from middle lane.In this virtual highway other traffic that is driving +-10 MPH of the 50 MPH speed limit.
 
