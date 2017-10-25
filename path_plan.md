@@ -3,15 +3,14 @@
 ![virtual highway](https://github.com/parthasen/autonomousCAR/blob/PathPlan/A282D019-B337-470B-AE4A-8570925E2A5F.jpeg)
 
 ###  Introduction
-My car is running with maximum speed of 49.5. Already covered 20 miles and in running in right track strating from middle lane.In this virtual highway other traffic that is driving +-10 MPH of the 50 MPH speed limit.
+My car is running with maximum speed of 49.5. Already covered 20 miles and running in right track strating from middle lane.In this virtual highway other traffic that is driving +-10 MPH of the 50 MPH speed limit.
 
 1. Car's localization and sensor fusion data, there is also a sparse map list of waypoints around the highway are provided.
 2. The car should try to go as close as possible to the 50 MPH speed limit, which means passing slower traffic when possible, note that other cars will try to change lanes too. The car should avoid hitting other cars at all cost as well as driving inside of the marked road lanes at all times, unless going from one lane to another. The car should be able to make one complete loop around the 6946m highway. Since the car is trying to go 50 MPH, it should take a little over 5 minutes to complete 1 loop. Also the car should not experience total acceleration over 10 m/s^2 and jerk that is greater than 50 m/s^3.
 3. **Simulator** which contains the Path Planning Project are provided and can be downloaded from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases).
-4. Helper functions are provided like 'hasData()', 'distance()' to calculate euclidean distance,'ClosestWaypoint()' takes input of x and y value to find way points surrounded, 'NextWaypoint()'helps to know distance at front and back, 'getFrenet()' for finding Frenet Coordinate,  'getXY()'   
+4. Helper functions are provided like `hasData()`, `distance()` to calculate euclidean distance,`ClosestWaypoint()` takes input of x and y value to find way points surrounded, `NextWaypoint()` helps to know distance at front and back, `getFrenet()` for finding Frenet Coordinate,  `getXY()`   
 
 ## Details of the project
-
 1. The car uses a perfect controller and will visit every (x,y) point it recieves in the list every .02 seconds. The units for the (x,y) points are in meters and the spacing of the points determines the speed of the car. The vector going from a point to the next point in the list dictates the angle of the car. Acceleration both in the tangential and normal directions is measured along with the jerk, the rate of change of total Acceleration. The (x,y) point paths that the planner recieves should not have a total acceleration that goes over 10 m/s^2, also the jerk should not go over 50 m/s^3. (NOTE: As this is BETA, these requirements might change. Also currently jerk is over a .02 second interval, it would probably be better to average total acceleration over 1 second and measure jerk from that.
 
 2. There will be some latency between the simulator running and the path planner returning a path, with optimized code usually its not very long maybe just 1-3 time steps. During this delay the simulator will continue using points that it was last given, because of this its a good idea to store the last points you have used so you can have a smooth transition. previous_path_x, and previous_path_y can be helpful for this transition since they show the last points given to the simulator controller with the processed points already removed.
@@ -27,7 +26,7 @@ Each waypoint in the list contains  [x,y,s,dx,dy] values. x and y are the waypoi
 
 The highway's waypoints loop around so the frenet s value, distance along the road, goes from 0 to 6945.554.
 
-2. Engineering points like Localization of car and other cars are estimated  by sensor fusion of '<telemetry>' data
+2. Engineering points like Localization of car and other cars are estimated  by sensor fusion of `telemetry>` data
 
 		// Main car's localization Data
           	double car_x = j[1]["x"];
@@ -64,7 +63,7 @@ Lots of jerk and cars go out of lane very soon !!
                 vector<double> next_wp1 = getXY(car_s+100,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
                 vector<double> next_wp2 = getXY(car_s+150,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
 
-'<ptsx.push_back()>' and 'ptsy.push_back()' are used to get the spline
+`ptsx.push_back()` and `ptsy.push_back()` are used to get the spline
 
 		tk::spline s;
 		s.set_points(ptsx,ptsy);
@@ -84,7 +83,7 @@ A maximum 50 points path will be generated. But few lesser points will be genert
                   double x_point = x_add_on+(target_x)/N;
                   double y_point = s(x_point);
 
-'s(x_point)' is used to get waypoints to be.
+`s(x_point)` is used to get waypoints to be.
 
 Braking spline in to 30 points that used to get x,y points and target distance. 
 
@@ -128,7 +127,7 @@ Sensor Fusion:
 		double dist = distance(car_x,car_y,x,y);
 		...
 
-Details of car at left lane is calculated using 'lane -1', right lane by 'lane+1'. 'check_car_s'  and 'car_s' are gives the distance between two cars. 
+Details of car at left lane is calculated using `lane -1`, right lane by `lane+1`. `check_car_s`  and `car_s` are gives the distance between two cars. 
 
 		if (other_car_lane==lane-1)
 		{
