@@ -492,8 +492,8 @@ int main() {
 
                 cout<<endl;
 		cout<<"my car lane no:"<<lane<<endl;// lane of my car
-		cout<<"my car speed:"<<car_speed<<endl;// lane of my car
-		cout<<"my ref_car speed:"<<ref_vel<<endl;// lane of my car
+		cout<<"my car speed:"<<car_speed<<endl;
+		cout<<"my ref_car speed:"<<ref_vel<<endl;
 		cout<<"Traffic_mylane:"<< cars_mylane_s.size()<<endl;
                 cout<<"Traffic_myleft:"<< cars_myleft_s.size()<<endl;
                 cout<<"Traffic_myright:"<< cars_myright_s.size()<<endl;
@@ -510,45 +510,97 @@ int main() {
 //https://github.com/parthasen/autonomousCAR/blob/ea3872d2db9a8d6f3ee0b54f3f428eec280210c5/main.cpp
 
 
-                if(dist_closest_front<30)
+                if(dist_closest_front<40)
                 {
                   //ref_vel=29.5;
-		   too_close=true;
+		   //too_close=true;
 	   	   //Lane change
 		   if(lane==1)//and cars_myright_s.size()==0
 		   {
-			if(dist_closest_leftfront>50 && dist_closest_leftback>20 && dist_closest_leftfront>dist_closest_rightfront)
+			if(dist_closest_leftfront>40 && dist_closest_leftback>35 && dist_closest_leftfront>dist_closest_rightfront)
 				lane=lane-1;
-			if(dist_closest_rightfront>50 && dist_closest_rightback>20 && dist_closest_leftfront<dist_closest_rightfront )
+			if(dist_closest_rightfront>40 && dist_closest_rightback>35 && dist_closest_leftfront<dist_closest_rightfront )
 				lane=lane+1;
 			
 		   }
-		   if(lane==2 && dist_closest_leftfront>50 && dist_closest_leftback>20 && dist_closest_leftfront>dist_closest_rightfront)
+		   if(lane==2 && dist_closest_leftfront>40 && dist_closest_leftback>35)
 		   {
 			lane=lane-1;
 		   }
 
-		   if(lane==0 && dist_closest_rightfront>50 && dist_closest_rightback>20 && dist_closest_leftfront<dist_closest_rightfront)
+		   if(lane==0 && dist_closest_rightfront>40 && dist_closest_rightback>35)
 		   {
 			lane=lane+1;
 		   }
-		   //if(too_close)
-		   //{
-			//ref_vel-=0.3;
-		   //}
+
                 }
 
-		//else if(ref_vel<49.5 && dist_closest_front>50)
-		  // {
-		   //	ref_vel+=0.15;
-		   //}
+                if(dist_closest_front>40)
+                {
+
+		   if(lane==1)//and cars_myright_s.size()==0
+		   {
+			if(dist_closest_leftfront>dist_closest_front+20 && dist_closest_leftback>40 && dist_closest_leftfront>dist_closest_rightfront)
+				lane=lane-1;
+			if(dist_closest_rightfront>dist_closest_front+20 && dist_closest_rightback>40 && dist_closest_leftfront<dist_closest_rightfront )
+				lane=lane+1;
+			
+		   }
+		   if(lane==2 && dist_closest_leftfront>dist_closest_front+20 && dist_closest_leftback>40)
+		   {
+			lane=lane-1;
+		   }
+
+		   if(lane==0 && dist_closest_rightfront>dist_closest_front+20 && dist_closest_rightback>40)
+		   {
+			lane=lane+1;
+		   }
+
+                }
+
+
+		if(dist_closest_front<20 and ref_vel>35)
+                {
+
+		   if(lane==1)//and cars_myright_s.size()==0
+		   {
+			if(dist_closest_leftfront>dist_closest_rightfront)
+				lane=lane-1;
+			if(dist_closest_leftfront<dist_closest_rightfront )
+				lane=lane+1;
+			
+		   }
+		   if(lane==2)
+		   {
+			lane=lane-1;
+		   }
+
+		   if(lane==0)
+		   {
+			lane=lane+1;
+		   }
+
+                }
+
+		if(dist_closest_front<50)
+		{
+		too_close=true;
+		}
+
+		
+
             }
         }
 
 		   //velocity control
-		   if(too_close)
+		   if(too_close & ref_vel>35)
 		   {
-			ref_vel-=0.4;
+			ref_vel-=0.33;
+		   }
+
+		   if(too_close & ref_vel<35)
+		   {
+			ref_vel-=0.28;
 		   }
 		   else if(ref_vel<49.5 && dist_closest_front>50)
 		   {
@@ -583,9 +635,9 @@ int main() {
                         ptsy.push_back(ref_y);
 
                     }
-                    vector<double> next_wp0 = getXY(car_s+50,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
-                    vector<double> next_wp1 = getXY(car_s+100,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
-                    vector<double> next_wp2 = getXY(car_s+150,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
+                    vector<double> next_wp0 = getXY(car_s+30,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
+                    vector<double> next_wp1 = getXY(car_s+60,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
+                    vector<double> next_wp2 = getXY(car_s+90,(2+4*lane),map_waypoints_s,map_waypoints_x,map_waypoints_y);
 
                     ptsx.push_back(next_wp0[0]);
                     ptsx.push_back(next_wp1[0]);
