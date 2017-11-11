@@ -1,23 +1,11 @@
 # ROS
-### roscore
-
+###  ROS master - first terminal
     octo@octo:~/catkin_ws$ roscore
-
-PARAMETERS
- * /rosdistro: indigo
- * /rosversion: 1.11.21
-
-NODES
-
-auto-starting new master
-process[master]: started with pid [5107]
-ROS_MASTER_URI=http://octo:11311/
-
-setting /run_id to 8bfc93e0-b1b8-11e7-be21-3417ebb661ee
-process[rosout-1]: started with pid [5120]
-started core service [/rosout]
-
-### another terminal
+### second terminal
+    rosrun turtlesim turtlesim_node
+### third terminal
+    rosrun turtlesim turtle_teleop_key
+### Fourth terminal
 octo@octo:~$ rosnode list
 /rosout
 /teleop_turtle
