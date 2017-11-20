@@ -41,6 +41,7 @@
 
 ## Catkin
 
+##### Creating Space
     octo@octo:~$ mkdir -p ~/catkin_ws/src
     octo@octo:~$ cd ~/catkin_ws/src
     
@@ -50,9 +51,14 @@ Let’s list the contents of the current directory to see what changed `ws/src$ 
 
 Return to the top level directory `octo@octo:~/catkin_ws/src$ cd ~/catkin_ws`
 
+build the workspace (Note: you must issue this command from within the top level directory (i.e., within catkin_ws NOT catkin_ws/src)
+        
+        octo@octo:~/catkin_ws$ catkin_make
+        
+http://wiki.ros.org/catkin/conceptual_overview        
 
+    octo@octo:~/catkin_ws$ ls
 
-
-
+##### Cloning packages
 
 
