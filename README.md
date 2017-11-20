@@ -81,7 +81,7 @@ Error: Could not find a package configuration file provided by  "controller_mana
 
     octo@octo:~/catkin_ws$ rosdep check simple_arm
     octo@octo:~/catkin_ws$ rosdep install -i simple_arm
-    
+https://github.com/udacity/simple_arm    
     
     
 
