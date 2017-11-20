@@ -1,4 +1,5 @@
 # ROS
+## Introduction
 ###  ROS master - first terminal
     octo@octo:~/catkin_ws$ roscore
 ### second terminal
@@ -38,6 +39,6 @@
         ## Echo message
         octo@octo:~$ rostopic echo /turtle1/cmd_vel
 
-
+## Packages and Catkin
 
 
