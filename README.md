@@ -45,7 +45,9 @@
     octo@octo:~$ cd ~/catkin_ws/src
     
 initialize the catkin workspace`octo@octo:~/catkin_ws/src$ catkin_init_workspace`
+
 Let’s list the contents of the current directory to see what changed `ws/src$ ls -l`
+
 Return to the top level directory `octo@octo:~/catkin_ws/src$ cd ~/catkin_ws`
 
 
