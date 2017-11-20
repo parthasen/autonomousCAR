@@ -61,4 +61,19 @@ http://wiki.ros.org/catkin/conceptual_overview
 
 ##### Cloning packages
 
+    octo@octo:~/catkin_ws$ cd ~/catkin_ws/src
+    octo@octo:~/catkin_ws/src$ git clone https://github.com/udacity/simple_arm_01.git simple_arm
+Building the simple_arm package:
+
+    octo@octo:~/catkin_ws/src$ cd ~/catkin_ws
+    octo@octo:~/catkin_ws$ catkin_make
+    
+Error: Could not find a package configuration file provided by  "controller_manager"   
+    
+    octo@octo:~/catkin_ws$ sudo apt-get install ros-indigo-controller-manager
+    octo@octo:~/catkin_ws$ catkin_make
+
+    
+
+
 
