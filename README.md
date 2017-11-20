@@ -28,8 +28,16 @@
         Subscribers: 
          * /turtlesim (http://octo:44078/)
  
-octo@octo:~$ rosmsg list
+    
+        octo@octo:~$ rosmsg list
+        octo@octo:~$ rosmsg show geometry_msgs/Twist
+        octo@octo:~$ rosmsg info
+        rosed geometry_msgs Twist.msg
+        octo@octo:~$ rosed geometry_msgs Twist.msg
+        
+        ## Echo message
+        octo@octo:~$ rostopic echo /turtle1/cmd_vel
 
 
-### Simulation
-octo@octo:~$ rosrun turtlesim turtle_teleop_key
+
+
