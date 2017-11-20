@@ -77,7 +77,13 @@ Error: Could not find a package configuration file provided by  "controller_mana
 
     octo@octo:~/catkin_ws$ source devel/setup.bash
     octo@octo:~/catkin_ws$ roslaunch simple_arm robot_spawn.launch
+[WARN] [WallTime: 1511177315.031336] [0.000000] Controller Spawner couldn't find the expected controller_manager ROS interface.
 
+    octo@octo:~/catkin_ws$ rosdep check simple_arm
+    octo@octo:~/catkin_ws$ rosdep install -i simple_arm
+    
+    
+    
 
     
 
