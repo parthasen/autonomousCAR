@@ -19,7 +19,14 @@ http://wiki.ros.org/kinetic/Installation/Ubuntu
 
         echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
         source ~/.bashrc
-        
+
+## Environment
+1. Setup`(SDC3) octo@octo:~$ source /opt/ros/kinetic/setup.bash`
+2. Inspecting the Environment `(SDC3) octo@octo:~$ env'
+
+
+
+    
     
 ## Introduction
 ###  ROS master - first terminal
