@@ -1,4 +1,18 @@
 # ROS
+## Installation
+
+http://wiki.ros.org/kinetic/Installation/Ubuntu
+
+1. Setup your computer to accept software from packages.ros.org
+    `(SDC3) octo@octo:~$ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'`
+2. Set up your keys
+    `(SDC3) octo@octo:~$ sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116`
+3.  make sure your Debian package index is up-to-date: 
+    
+        (SDC3) octo@octo:~$ sudo apt-get update
+        (SDC3) octo@octo:~$ sudo apt-get install ros-kinetic-desktop-full   
+        
+    
 ## Introduction
 ###  ROS master - first terminal
     octo@octo:~/catkin_ws$ roscore
