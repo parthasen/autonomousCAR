@@ -11,6 +11,14 @@ http://wiki.ros.org/kinetic/Installation/Ubuntu
     
         (SDC3) octo@octo:~$ sudo apt-get update
         (SDC3) octo@octo:~$ sudo apt-get install ros-kinetic-desktop-full   
+4. Initialize rosdep
+
+        sudo rosdep init
+        rosdep update
+5. It's convenient if the ROS environment variables are automatically added to your bash session every time a new shell is launched: 
+
+        echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+        source ~/.bashrc
         
     
 ## Introduction
