@@ -116,11 +116,12 @@ ROS packages have two different types of dependencies: build dependencies, and r
 To check for missing dependencies in the simple_arm package:`$ rosdep check simple_arm`
    
 -----
--catkin_ws is workspace
+- catkin_ws is workspace
 
---Simple_arm is package
+-- simple_arm is package
 
----
+--- The first node `simple_mover`. simple_mover does nothing more than publish joint angle commands to `simple_arm`.
+Second node `arm_mover`. `arm_mover` provides a service called safe_move, which allows the arm to be moved to any position within its workspace which has been deemed to be “safe”. The safe zone is bounded by minimum and maximum joint angles, and is configurable via the ROS’ parameter server. The last node is the `look_away node`. This node subscribes to a topic where camera data is being published. When the camera detects an image with uniform color, meaning it’s looking at the sky, the node will call the safe_move service to move the arm to a new position.
 
     
 
