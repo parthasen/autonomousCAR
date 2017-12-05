@@ -111,7 +111,14 @@ Error: Could not find a package configuration file provided by  "controller_mana
     octo@octo:~/catkin_ws$ rosdep install -i simple_arm
 https://github.com/udacity/simple_arm    
     
-    
+##### Dependencies
+ROS packages have two different types of dependencies: build dependencies, and run dependencies. This error message was due to a missing runtime dependency. The rosdep tool will check for a package's missing dependencies, download them, and install them.
+To check for missing dependencies in the simple_arm package:`$ rosdep check simple_arm`
+   
+-----
+-catkin_ws is workspace
+--Simple_arm is package
+---
 
     
 
