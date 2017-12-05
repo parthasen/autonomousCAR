@@ -117,7 +117,9 @@ To check for missing dependencies in the simple_arm package:`$ rosdep check simp
    
 -----
 -catkin_ws is workspace
+
 --Simple_arm is package
+
 ---
 
     
