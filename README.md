@@ -3,29 +3,25 @@
 
 http://wiki.ros.org/kinetic/Installation/Ubuntu
 
-1. Setup your computer to accept software from packages.ros.org
-    `(SDC3) octo@octo:~$ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'`
-2. Set up your keys
-    `(SDC3) octo@octo:~$ sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116`
-3.  make sure your Debian package index is up-to-date: 
-    
-        (SDC3) octo@octo:~$ sudo apt-get update
-        (SDC3) octo@octo:~$ sudo apt-get install ros-kinetic-desktop-full   
-4. Initialize rosdep
+### I am using ENV. python 2.7.11
 
-        sudo rosdep init
-        rosdep update
-5. It's convenient if the ROS environment variables are automatically added to your bash session every time a new shell is launched: 
+#### 1. Setup your sources.list
+    sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+#### 2. Set up keys
+    sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+#### 3. Installation
+    sudo apt-get update
+    sudo apt-get install ros-kinetic-desktop-full   
+#### 4. Initialize rosdep
+    sudo rosdep init
+    rosdep update
+#### 5. Environment setup
+    echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+    source ~/.bashrc
+   **change**
+    `source /opt/ros/kinetic/setup.bash` and `env`
 
-        echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
-        source ~/.bashrc
-
-## Environment
-1. Setup`(SDC3) octo@octo:~$ source /opt/ros/kinetic/setup.bash`
-2. Inspecting the Environment `(SDC3) octo@octo:~$ env`
-3. `(SDC3) octo@octo:~$ echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc`
-
-    
+   
     
 ## Introduction
 ###  ROS master - first terminal
