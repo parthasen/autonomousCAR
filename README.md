@@ -32,13 +32,13 @@ http://wiki.ros.org/kinetic/Installation/Ubuntu
     cd ~/catkin_ws
 
 #### build the workspace (Note: within catkin_ws NOT catkin_ws/src)
-    octo@octo:~/catkin_ws$ catkin_make
+    catkin_make
         
 http://wiki.ros.org/catkin/conceptual_overview        
 
 ## Introduction--turtlesim
 ###  ROS master - first terminal
-    octo@octo:~/catkin_ws$ roscore
+    roscore
 ### second terminal
     rosrun turtlesim turtlesim_node
 ### third terminal
@@ -76,12 +76,12 @@ http://wiki.ros.org/catkin/conceptual_overview
         ## Echo message
         octo@octo:~$ rostopic echo /turtle1/cmd_vel
 ## simple_arm
-### Cloning packages
-    octo@octo:~/catkin_ws$ cd ~/catkin_ws/src
-    octo@octo:~/catkin_ws/src$ git clone https://github.com/udacity/simple_arm_01.git simple_arm
-#### Building the simple_arm package:
-    octo@octo:~/catkin_ws/src$ cd ~/catkin_ws
-    octo@octo:~/catkin_ws$ catkin_make
+### Cloning
+    cd ~/catkin_ws/src
+    git clone https://github.com/udacity/simple_arm_01.git simple_arm
+#### Building
+    cd ~/catkin_ws
+    catkin_make
 ##### Error: Could not find a package configuration file provided by  "controller_manager"   
     octo@octo:~/catkin_ws$ sudo apt-get install ros-indigo-controller-manager
     octo@octo:~/catkin_ws$ catkin_make
