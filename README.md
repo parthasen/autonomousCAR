@@ -21,6 +21,44 @@ http://wiki.ros.org/kinetic/Installation/Ubuntu
    **change**
     `source /opt/ros/kinetic/setup.bash` and `env`
 
+## Catkin
+    mkdir -p ~/catkin_ws/src
+    cd ~/catkin_ws/src
+#### initialize the catkin workspace
+    catkin_init_workspace
+#### list the contents of the current directory 
+    ls -l
+#### Return to the top level directory
+    cd ~/catkin_ws
+
+#### build the workspace (Note: within catkin_ws NOT catkin_ws/src)
+    octo@octo:~/catkin_ws$ catkin_make
+        
+http://wiki.ros.org/catkin/conceptual_overview        
+
+#### Cloning packages
+
+    octo@octo:~/catkin_ws$ cd ~/catkin_ws/src
+    octo@octo:~/catkin_ws/src$ git clone https://github.com/udacity/simple_arm_01.git simple_arm
+Building the simple_arm package:
+
+    octo@octo:~/catkin_ws/src$ cd ~/catkin_ws
+    octo@octo:~/catkin_ws$ catkin_make
+    
+Error: Could not find a package configuration file provided by  "controller_manager"   
+    
+    octo@octo:~/catkin_ws$ sudo apt-get install ros-indigo-controller-manager
+    octo@octo:~/catkin_ws$ catkin_make
+
+##### ROS LAUNCH
+
+    octo@octo:~/catkin_ws$ source devel/setup.bash
+    octo@octo:~/catkin_ws$ roslaunch simple_arm robot_spawn.launch
+[WARN] [WallTime: 1511177315.031336] [0.000000] Controller Spawner couldn't find the expected controller_manager ROS interface.
+
+    octo@octo:~/catkin_ws$ rosdep check simple_arm
+    octo@octo:~/catkin_ws$ rosdep install -i simple_arm
+https://github.com/udacity/simple_arm    
    
     
 ## Introduction
@@ -63,49 +101,6 @@ http://wiki.ros.org/kinetic/Installation/Ubuntu
         ## Echo message
         octo@octo:~$ rostopic echo /turtle1/cmd_vel
 
-## Catkin
-
-##### Creating Space
-    octo@octo:~$ mkdir -p ~/catkin_ws/src
-    octo@octo:~$ cd ~/catkin_ws/src
-    
-initialize the catkin workspace`octo@octo:~/catkin_ws/src$ catkin_init_workspace`
-
-Let’s list the contents of the current directory to see what changed `ws/src$ ls -l`
-
-Return to the top level directory `octo@octo:~/catkin_ws/src$ cd ~/catkin_ws`
-
-build the workspace (Note: you must issue this command from within the top level directory (i.e., within catkin_ws NOT catkin_ws/src)
-        
-        octo@octo:~/catkin_ws$ catkin_make
-        
-http://wiki.ros.org/catkin/conceptual_overview        
-
-    octo@octo:~/catkin_ws$ ls
-
-##### Cloning packages
-
-    octo@octo:~/catkin_ws$ cd ~/catkin_ws/src
-    octo@octo:~/catkin_ws/src$ git clone https://github.com/udacity/simple_arm_01.git simple_arm
-Building the simple_arm package:
-
-    octo@octo:~/catkin_ws/src$ cd ~/catkin_ws
-    octo@octo:~/catkin_ws$ catkin_make
-    
-Error: Could not find a package configuration file provided by  "controller_manager"   
-    
-    octo@octo:~/catkin_ws$ sudo apt-get install ros-indigo-controller-manager
-    octo@octo:~/catkin_ws$ catkin_make
-
-##### ROS LAUNCH
-
-    octo@octo:~/catkin_ws$ source devel/setup.bash
-    octo@octo:~/catkin_ws$ roslaunch simple_arm robot_spawn.launch
-[WARN] [WallTime: 1511177315.031336] [0.000000] Controller Spawner couldn't find the expected controller_manager ROS interface.
-
-    octo@octo:~/catkin_ws$ rosdep check simple_arm
-    octo@octo:~/catkin_ws$ rosdep install -i simple_arm
-https://github.com/udacity/simple_arm    
     
 ##### Dependencies
 ROS packages have two different types of dependencies: build dependencies, and run dependencies. This error message was due to a missing runtime dependency. The rosdep tool will check for a package's missing dependencies, download them, and install them.
