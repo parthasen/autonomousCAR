@@ -83,8 +83,9 @@ http://wiki.ros.org/catkin/conceptual_overview
     cd ~/catkin_ws
     catkin_make
 ##### Error: Could not find a package configuration file provided by  "controller_manager"   
-    octo@octo:~/catkin_ws$ sudo apt-get install ros-indigo-controller-manager
-    octo@octo:~/catkin_ws$ catkin_make
+    sudo apt-get install ros-indigo-controller-manager
+    sudo apt-get install ros-kinetic-controller-manager
+    catkin_make
 #### ROS LAUNCH
     octo@octo:~/catkin_ws$ source devel/setup.bash
     octo@octo:~/catkin_ws$ roslaunch simple_arm robot_spawn.launch
