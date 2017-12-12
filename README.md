@@ -34,7 +34,8 @@ http://wiki.ros.org/kinetic/Installation/Ubuntu
 #### build the workspace (Note: within catkin_ws NOT catkin_ws/src)
     catkin_make
         
-http://wiki.ros.org/catkin/conceptual_overview        
+http://wiki.ros.org/catkin/conceptual_overview    
+
 
 ## Introduction--turtlesim
 ###  ROS master - first terminal
